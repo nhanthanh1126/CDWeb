@@ -1,13 +1,15 @@
 import express from "express";
-// thư viện cho phép lấy tham số từ phía client vd /user?id=7 
 import bodyParser from "body-parser";
 import viewEngine from "./config/viewEngine";
 import initWebRoutes from "./route/web";
 import connectDB from "./config/connectDB"
+import cors from 'cors';
 
 require('dotenv').config();
 
 let app = express();
+
+app.use(cors({ origin: true }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
