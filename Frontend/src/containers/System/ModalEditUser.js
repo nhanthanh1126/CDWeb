@@ -89,6 +89,7 @@ class ModalEditUser extends Component {
                                 type="text"
                                 onChange={(event) => { this.handleOnChangeInput(event, "email") }}
                                 value={this.state.email}
+                                disabled
                             />
                         </div>
                         <div className="input-container" >
@@ -97,6 +98,7 @@ class ModalEditUser extends Component {
                                 type="password"
                                 onChange={(event) => { this.handleOnChangeInput(event, "password") }}
                                 value={this.state.password}
+                                disabled
                             />
                         </div>
                         <div className="input-container" >
