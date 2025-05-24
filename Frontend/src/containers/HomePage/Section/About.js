@@ -17,9 +17,9 @@ class About extends Component {
                             width="100%" height="400px"
                             src="https://www.youtube.com/embed/HnGao2Zl_rE"
                             title="Viết Tiếp Câu Chuyện Hòa Bình - Đông Hùng &amp; Võ Hạ Trâm | Lễ Kỷ Niệm 50 Năm Giải Phóng Miền Nam"
-                            frameborder="0"
+                            frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen>
+                            allowFullScreen>
                         </iframe>
                     </div>
 
