@@ -12,7 +12,7 @@ class HomeHeader extends Component {
         //fire redux event : actions
     }
     render() {
-        // console.log('check props:', this.props)
+        
         let language = this.props.language;
 
         return (
