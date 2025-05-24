@@ -19,7 +19,6 @@ class About extends Component {
                             title="Viết Tiếp Câu Chuyện Hòa Bình - Đông Hùng &amp; Võ Hạ Trâm | Lễ Kỷ Niệm 50 Năm Giải Phóng Miền Nam"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen>
                         </iframe>
                     </div>
