@@ -9,14 +9,13 @@ import { getAllCodeService } from "../../services/userService";
 export const fetchGenderStart = () => {
     return async (dispatch, getState) => {
         try {
+            dispatch({ type: actionTypes.FETCH_GENDER_START })
+
             let res = await getAllCodeService("GENDER");
             if (res && res.errCode === 0) {
-                console.log('check get state', getState);
-
                 dispatch(fetchGenderSuccess(res.data));
             } else {
                 dispatch(fetchGenderFailed());
-
             }
         } catch (e) {
             dispatch(fetchGenderFailed());
@@ -33,3 +32,62 @@ export const fetchGenderSuccess = (genderData) => ({
 export const fetchGenderFailed = () => ({
     type: actionTypes.FETCH_GENDER_FAILED
 })
+
+export const fetchPositionSuccess = (positionData) => ({
+    type: actionTypes.FETCH_POSITION_SUCCESS,
+    data: positionData
+})
+
+export const fetchPositionFailded = () => ({
+    type: actionTypes.FETCH_POSITION_FAILED
+})
+
+export const fetchRoleSuccess = (roleData) => ({
+    type: actionTypes.FETCH_ROLE_SUCCESS,
+    data: roleData
+})
+export const fetchRoleFailded = () => ({
+    type: actionTypes.FETCH_ROLE_FAILED
+})
+
+export const fetchPositionStart = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await getAllCodeService("POSITION");
+            if (res && res.errCode === 0) {
+                dispatch(fetchPositionSuccess(res.data))
+
+            } else {
+                dispatch(fetchPositionFailded());
+
+            }
+
+        } catch (e) {
+            dispatch(fetchPositionFailded());
+            console.log('fetchPositionStart err', e)
+
+        }
+    }
+
+}
+
+export const fetchRoleStart = () => {
+    return async (dispatch, getState) => {
+        try {
+
+            let res = await getAllCodeService("ROLE");
+            if (res && res.errCode === 0) {
+                dispatch(fetchRoleSuccess(res.data))
+
+            } else {
+                dispatch(fetchRoleFailded());
+
+            }
+
+        } catch (e) {
+            dispatch(fetchRoleFailded());
+            console.log('fetchRoleStart err', e)
+        }
+    }
+}

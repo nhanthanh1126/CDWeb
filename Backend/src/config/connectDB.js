@@ -3,7 +3,7 @@ const { Sequelize } = require('sequelize');
 
 
 // Option 3: Passing parameters separately (other dialects)
-const sequelize = new Sequelize('databasenew', 'root', null, {
+const sequelize = new Sequelize('cdweb', 'root', null, {
   host: 'localhost',
   dialect:  'mysql',
   logging: false
