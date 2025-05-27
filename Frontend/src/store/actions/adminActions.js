@@ -1,5 +1,9 @@
 import actionTypes from './actionTypes';
-import { getAllCodeService } from "../../services/userService";
+import {
+    getAllCodeService, createNewUserService,
+    // getAllUsers,
+    // deleteUserService
+} from "../../services/userService";
 
 
 // export const fetchGenderStart = () => ({
@@ -91,3 +95,33 @@ export const fetchRoleStart = () => {
         }
     }
 }
+
+
+export const createNewUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await createNewUserService(data);
+            console.log('check create user redux', res)
+
+            if (res && res.errCode === 0) {
+                //         toast.success("Create a new user succeed!");
+                dispatch(saveUserSuccess())
+                //         dispatch(fetchAllUsersStart());
+            } else {
+                dispatch(saveUserFailded());
+                //         toast.error("Duplicate mail");
+            }
+        } catch (e) {
+            dispatch(saveUserFailded());
+            console.log('saveUserFailed err', e)
+
+        }
+    }
+}
+export const saveUserSuccess = () => ({
+    type: actionTypes.CREATE_USER_SUCCESS
+})
+
+export const saveUserFailded = () => ({
+    type: actionTypes.CREATE_USER_FAILED
+})
