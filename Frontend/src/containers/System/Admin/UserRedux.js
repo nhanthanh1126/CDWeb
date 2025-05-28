@@ -6,7 +6,8 @@ import * as actions from "../../../store/actions"
 import './UserRedux.scss';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-
+import TableManageUser from './TableManageUser';
+// import { toast } from "react-toastify";
 class UserRedux extends Component {
 
     constructor(props) {
@@ -65,6 +66,34 @@ class UserRedux extends Component {
                 positionArr: arrPositions,
                 position: arrPositions && arrPositions.length > 0 ? arrPositions[0].key : ''
             })
+        }
+        if (prevProps.listUsers !== this.props.listUsers) {
+
+            // let arrGenders = this.props.genderRedux;
+            // let arrRoles = this.props.roleRedux;
+            // let arrPositions = this.props.positionRedux;
+
+            this.setState({
+                email: '',
+                password: '',
+                firstName: '',
+                lastName: '',
+                phoneNumber: '',
+                address: '',
+                gender: '',
+                role: '',
+                position: '',
+                avatar: '',
+                // gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
+                // role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : '',
+                // position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
+
+                // avatar: '',
+                // previewImgURL: '',
+
+                // action: CRUD_ACTIONS.CREATE,
+            })
+
         }
     }
 
@@ -325,14 +354,12 @@ class UserRedux extends Component {
                                     <FormattedMessage id="manage-user.save" />
                                 </button>
                             </div>
-                            {/* <div className="col-12  mb-5">
+                            <div className="col-12  mb-5">
                                 <TableManageUser
-                                    handleEditUserFromParentKey={this.handleEditUserFromParent}
-                                    action={this.state.action}
-
-
+                                    // handleEditUserFromParentKey={this.handleEditUserFromParent}
+                                    // action={this.state.action}
                                 />
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -357,7 +384,7 @@ const mapStateToProps = state => {
         roleRedux: state.admin.roles,
         positionRedux: state.admin.positions,
         isLoadingGender: state.admin.isLoadingGender,
-        // listUsers: state.admin.users,
+        listUsers: state.admin.users,
     };
 };
 
@@ -367,7 +394,7 @@ const mapDispatchToProps = dispatch => {
         getPositionStart: () => dispatch(actions.fetchPositionStart()),
         getRoleStart: () => dispatch(actions.fetchRoleStart()),
         createNewUser: (data) => dispatch(actions.createNewUser(data)),
-        // fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
+        fetchUserRedux: () => dispatch(actions.fetchAllUsersStart()),
         // editAUserRedux: (data) => dispatch(actions.editAUser(data))
 
         // processLogout: () => dispatch(actions.processLogout()),
