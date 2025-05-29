@@ -2,7 +2,7 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
         return Promise.all([
             queryInterface.changeColumn('users', 'image', {
-                type: Sequelize.BLOB('long'),
+                type: Sequelize.BLOB('long'), // tiny, long, medium
                 allowNull: true,
             })
         ])

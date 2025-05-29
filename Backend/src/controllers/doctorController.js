@@ -1,12 +1,12 @@
-import dotorService from "../services/doctorService";
+import doctorService from '../services/doctorService'
 
-let  getTopDoctorHome =async (req, res) => {
+let getTopDoctorHome = async (req, res) => {
     let limit = req.query.limit;
-    if(!limit) limit = 10;
-    try{
-        let response = await dotorService.getTopDoctorHome(+limit);
+    if (!limit) limit = 10;
+    try {
+        let response = await doctorService.getTopDoctorHome(+limit);
         return res.status(200).json(response);
-    }catch(e){
+    } catch (e) {
         console.log(e);
         return res.status(200).json({
             errCode: -1,

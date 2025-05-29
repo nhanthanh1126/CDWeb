@@ -1,12 +1,12 @@
 import actionTypes from './actionTypes';
 import {
-    getAllCodeService, createNewUserService,
+    getAllCodeService,
+    createNewUserService,
     getAllUsers,
-    deleteUserService, getTopDoctorHomeService
+    deleteUserService, editUserService, getTopDoctorHomeService
+
 } from "../../services/userService";
 import { toast } from "react-toastify";
-import { dispatch } from '../../redux';
-
 
 // export const fetchGenderStart = () => ({
 //     type: actionTypes.FETCH_GENDER_START
@@ -15,15 +15,17 @@ import { dispatch } from '../../redux';
 export const fetchGenderStart = () => {
     return async (dispatch, getState) => {
         try {
-            dispatch({ type: actionTypes.FETCH_GENDER_START })
-
+            dispatch({
+                type: actionTypes.FETCH_GENDER_START
+            })
             let res = await getAllCodeService("GENDER");
-            
-            console.log('check res get top doctor', res1)
             if (res && res.errCode === 0) {
+                console.log('check get state', getState);
+
                 dispatch(fetchGenderSuccess(res.data));
             } else {
                 dispatch(fetchGenderFailed());
+
             }
         } catch (e) {
             dispatch(fetchGenderFailed());
@@ -40,15 +42,14 @@ export const fetchGenderSuccess = (genderData) => ({
 export const fetchGenderFailed = () => ({
     type: actionTypes.FETCH_GENDER_FAILED
 })
-
 export const fetchPositionSuccess = (positionData) => ({
     type: actionTypes.FETCH_POSITION_SUCCESS,
     data: positionData
 })
-
 export const fetchPositionFailded = () => ({
     type: actionTypes.FETCH_POSITION_FAILED
 })
+
 
 export const fetchRoleSuccess = (roleData) => ({
     type: actionTypes.FETCH_ROLE_SUCCESS,
@@ -57,13 +58,14 @@ export const fetchRoleSuccess = (roleData) => ({
 export const fetchRoleFailded = () => ({
     type: actionTypes.FETCH_ROLE_FAILED
 })
-
 export const fetchPositionStart = () => {
+
     return async (dispatch, getState) => {
         try {
 
             let res = await getAllCodeService("POSITION");
             if (res && res.errCode === 0) {
+                //console.log('hoi dan check',getState)
                 dispatch(fetchPositionSuccess(res.data))
 
             } else {
@@ -76,16 +78,20 @@ export const fetchPositionStart = () => {
             console.log('fetchPositionStart err', e)
 
         }
+
     }
 
 }
 
 export const fetchRoleStart = () => {
+
     return async (dispatch, getState) => {
         try {
 
             let res = await getAllCodeService("ROLE");
             if (res && res.errCode === 0) {
+
+                //console.log('hoi dan check',getState)
                 dispatch(fetchRoleSuccess(res.data))
 
             } else {
@@ -96,30 +102,43 @@ export const fetchRoleStart = () => {
         } catch (e) {
             dispatch(fetchRoleFailded());
             console.log('fetchRoleStart err', e)
-        }
-    }
-}
 
+        }
+
+    }
+
+}
 
 export const createNewUser = (data) => {
     return async (dispatch, getState) => {
         try {
+
             let res = await createNewUserService(data);
+
             if (res && res.errCode === 0) {
                 toast.success("Create a new user succeed!");
+                //console.log('hoi dan check',getState)
                 dispatch(saveUserSuccess())
                 dispatch(fetchAllUsersStart());
             } else {
                 dispatch(saveUserFailded());
-                //         toast.error("Duplicate mail");
+                toast.error("Duplicate mail");
+
             }
+
         } catch (e) {
             dispatch(saveUserFailded());
             console.log('saveUserFailed err', e)
 
         }
+
     }
+
+
+
+
 }
+
 export const saveUserSuccess = () => ({
     type: actionTypes.CREATE_USER_SUCCESS
 })
@@ -129,16 +148,13 @@ export const saveUserFailded = () => ({
 })
 
 export const fetchAllUsersStart = () => {
-
     return async (dispatch, getState) => {
         try {
 
             let res = await getAllUsers("ALL");
-            //let res1 =await  getTopDoctorHomeService(4);
-            //console.log('get top doctor:',res1)
+            // let res1 = await getTopDoctorHomeService(3);
+            // console.log('get top doctor:', res1)
             if (res && res.errCode === 0) {
-
-                //console.log('hoi dan check',getState)
                 dispatch(fetchAllUsersSuccess(res.users.reverse()))
 
             } else {
@@ -198,34 +214,62 @@ export const deleteUserSuccess = () => ({
 
 export const deleteUserFailed = () => ({
     type: actionTypes.DELETE_USER_FAILED
-    
 })
 
+export const editAUser = (data) => {
+    return async (dispatch, getState) => {
+        try {
 
-//let res1 = await getTopDoctorHomeService('');
+            let res = await editUserService(data);
 
-export const fetchTopDoctor = () =>{
-    return async(dispatch, getState) => {
-    
-    try{
-        let res =  await getTopDoctorHomeService('');
-        if(res && res.errCode === 0 ){
-            dispatch({
-                type:  actionTypes.FETCH_TOP_DOCTORS_SUCCESS,
-                dataDoctors: res.data
-            })
-        }else{
-           dispatch({
-                type:  actionTypes.FETCH_TOP_DOCTORS_FAILED,
-               
-                })
+            if (res && res.errCode === 0) {
+                toast.success("Update a new user succeed!");
+                //console.log('hoi dan check',getState)
+                dispatch(editUserSuccess())
+                dispatch(fetchAllUsersStart());
+            } else {
+                toast.error("Update a new user errro!");
+                dispatch(editUserFailed());
+            }
+
+        } catch (e) {
+            toast.error("Update a new user errro!");
+            dispatch(editUserFailed());
+            console.log('editUserFailed err', e)
         }
-
-    }catch (e){
-        console.log('FETCH_TOP_DOCTORS_FAILED', e)
-        dispatch({
-            type: actionTypes.FETCH_TOP_DOCTORS_FAILED
-        })
-    }
     }
 }
+
+export const editUserSuccess = () => ({
+    type: actionTypes.EDIT_USER_SUCCESS
+})
+
+export const editUserFailed = () => ({
+    type: actionTypes.EDIT_USER_FAILED
+})
+
+export const fetchTopDoctor = () => {
+    return async (dispatch, getState) => {
+        try {
+            let res = await getTopDoctorHomeService('');
+            if (res && res.errCode === 0) {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_SUCCESS,
+                    dataDoctors: res.data
+                })
+            } else {
+                dispatch({
+                    type: actionTypes.FETCH_TOP_DOCTORS_FAILED
+                })
+            }
+
+        } catch (e) {
+            console.log("Fetch top doc Fail: ", e);
+            
+            dispatch({
+                type: actionTypes.FETCH_TOP_DOCTORS_FAILED
+            })
+        }
+    }
+}
+// start doing end
