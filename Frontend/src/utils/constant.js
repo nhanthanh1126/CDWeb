@@ -20,6 +20,12 @@ export const manageActions = {
 export const dateFormat = {
     SEND_TO_SERVER: 'DD/MM/YYYY'
 };
+export const CRUD_ACTIONS = {
+  CREATE: "CREATE",
+  READ: "READ",
+  UPDATE: "UPDATE",
+  DELETE: "DELETE",
+};
 
 export const YesNoObj = {
     YES: 'Y',
