@@ -180,11 +180,11 @@ let updateUserData = (data) => {
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
-                // user.roleId = data.roleId;
-                // user.positionId = data.positionId;
-                // user.gender = data.gender;
-                // user.phoneNumber = data.phoneNumber;
-
+                user.roleId = data.roleId;
+                user.positionId = data.positionId;
+                user.gender = data.gender;
+                user.phoneNumber = data.phoneNumber;
+                user.image = data.avatar;
                 await user.save();
 
                 resolve({

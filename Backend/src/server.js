@@ -11,15 +11,18 @@ let app = express();
 
 app.use(cors({ origin: true }));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({limit : '50mb'}));
+app.use(bodyParser.urlencoded({limit : '50mb' ,extended: true }));
+
 
 viewEngine(app);
 initWebRoutes(app);
 
 connectDB();
 
-let port = process.env.PORT || 6969;
+let port = process.env.PORT || 7000;
 // port === undefined => port = 6969
 
 app.listen(port, () => {

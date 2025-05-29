@@ -7,6 +7,7 @@ import './UserRedux.scss';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import TableManageUser from './TableManageUser';
+import user from '../../../../../Backend/src/models/user';
 // import { toast } from "react-toastify";
 class UserRedux extends Component {
 
@@ -84,14 +85,12 @@ class UserRedux extends Component {
                 role: '',
                 position: '',
                 avatar: '',
-                // gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
-                // role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : '',
-                // position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
-
-                // avatar: '',
-                // previewImgURL: '',
-
-                // action: CRUD_ACTIONS.CREATE,
+                gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
+                role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : '',
+                position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
+                avatar: '',
+                actions: CRUD_ACTIONS.CREATE,
+                previewImgURL: '',
             })
 
         }
@@ -101,12 +100,11 @@ class UserRedux extends Component {
         let data = event.target.files;
         let file = data[0];
         if (file) {
-            //let base64 = await CommonUtils.getBase64(file);
-            //console.log('image', base64);
+            let base64 = await CommonUtils.getBase64(file);
             let objectUrl = URL.createObjectURL(file);
             this.setState({
                 previewImgURL: objectUrl,
-                avatar: file
+                avatar: base64
             })
 
         }
@@ -119,7 +117,33 @@ class UserRedux extends Component {
             isOpen: true
         })
     }
+    handleEditUserFromParentKey = (user)=> {
+        let imageBase64 = '';
+        if (user.image){
+           imageBase64 = new Buffer(user.image, 'base64').toString('binary')  
+        }
 
+        this.setState({
+            email: user.email,
+            password: 'HARDCODE',
+            firstName: user.firstName,
+            lastName:user.lastName,
+            address: user.address,
+            phoneNumber: user.phoneNumber,
+            gender: user.gender,
+            roleId: user.role,
+            positionId: user.position,
+            avatar: '',
+            previewImgURL: imageBase64,
+            action : CRUD_ACTIONS.EDIT,
+            userEditId : user.id
+        }, () =>{
+                console.log('check base64:' +  this.state)
+        })
+        
+    }
+
+    
     handleSaveUser = () => {
         let isValid = this.checkValidateInput();
         if (isValid === false) return;
@@ -356,8 +380,8 @@ class UserRedux extends Component {
                             </div>
                             <div className="col-12  mb-5">
                                 <TableManageUser
-                                    // handleEditUserFromParentKey={this.handleEditUserFromParent}
-                                    // action={this.state.action}
+                                     handleEditUserFromParentKey={this.handleEditUserFromParent}
+                                     action={this.state.action}
                                 />
                             </div>
                         </div>
