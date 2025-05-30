@@ -24,7 +24,7 @@ class HomePage extends Component {
         
         return (
             <div>
-                <HomeHeader />
+                <HomeHeader isShowbanner = {true} />
                 <Specialty
                     settings={settings}
                 />
