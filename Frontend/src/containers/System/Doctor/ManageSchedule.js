@@ -7,14 +7,14 @@ import * as actions from "../../../store/actions";
 import { CRUD_ACTIONS, LANGUAGES, dateFormat } from '../../../utils';
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
-import { fromPairs, iteratee, times } from 'lodash';
+// import { fromPairs, iteratee, times } from 'lodash';
 import { toast } from 'react-toastify';
 import _ from 'lodash';
-
+import { saveBulkScheduleDoctor } from '../../../services/userService';
 
 
 class ManageSchedule extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -22,43 +22,43 @@ class ManageSchedule extends Component {
             selectedDoctor: {},
             currentDate: '',
             rangeTime: []
-            
+
 
         }
     }
-componentDidMount(){
-     this.props.fetchAllDoctors();
-     this.props.fetchAllScheduleTime();
-}
-componentDidUpdate(prevProps, prevState, snapshot){
-     if (prevProps.allDoctors !== this.props.allDoctors) {
+    componentDidMount() {
+        this.props.fetchAllDoctors();
+        this.props.fetchAllScheduleTime();
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.allDoctors !== this.props.allDoctors) {
             let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
             this.setState({
                 listDoctors: dataSelect
             })
         }
-      //  if (prevProps.language !== this.props.language) {
-       //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-       //     this.setState({
-       //         listDoctors: dataSelect
-       //     })
-      //  }
+        //  if (prevProps.language !== this.props.language) {
+        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
+        //     this.setState({
+        //         listDoctors: dataSelect
+        //     })
+        //  }
 
-      if(prevProps.allScheduleTime !== this.props.allScheduleTime){
-        let data = this.props.allScheduleTime;
-        if(data && data.length > 0){
-            data = data.map(item => ({ ...item, isSlected: false}))
+        if (prevProps.allScheduleTime !== this.props.allScheduleTime) {
+            let data = this.props.allScheduleTime;
+            if (data && data.length > 0) {
+                data = data.map(item => ({ ...item, isSlected: false }))
+            }
+
+            this.setState({
+
+
+                rangeTime: data
+            })
         }
 
-        this.setState({
-            
-
-            rangeTime: data
-        })
-      }
-
-}
-   buildDataInputSelect = (inputData) => {
+    }
+    buildDataInputSelect = (inputData) => {
         let result = [];
         let { language } = this.props;
         if (inputData && inputData.length > 0) {
@@ -74,12 +74,10 @@ componentDidUpdate(prevProps, prevState, snapshot){
             })
 
         }
-          return result;
-    } 
+        return result;
+    }
     handleChangeSelect = async (selectedOption) => {
         this.setState({ selectedDoctor: selectedOption });
-
-       
     }
     handleOnchageDatePicket = (date) => {
         this.setState({
@@ -88,10 +86,10 @@ componentDidUpdate(prevProps, prevState, snapshot){
 
     }
     handleClickTime = (time) => {
-        let {rangeTime} = this.state;
-        if(rangeTime && rangeTime.length> 0 ){
+        let { rangeTime } = this.state;
+        if (rangeTime && rangeTime.length > 0) {
             rangeTime = rangeTime.map(item => {
-                if(item.id === time.id) item.isSlected = !item.isSlected;
+                if (item.id === time.id) item.isSlected = !item.isSlected;
                 return item;
             })
             this.setState({
@@ -99,104 +97,111 @@ componentDidUpdate(prevProps, prevState, snapshot){
             })
         }
     }
-    handleSaveShudule = ()=>{
-
-        let {rangeTime, selectedDoctor, currentDate} =this.state;
+    handleSaveSchedule = async () => {
+        let { rangeTime, selectedDoctor, currentDate } = this.state;
         let result = [];
-        if(!currentDate){
+
+        if (!currentDate) {
             toast.error("Invalid date!");
             return;
         }
-        if(selectedDoctor && _.isEmpty(selectedDoctor)){
+        if (selectedDoctor && _.isEmpty(selectedDoctor)) {
             toast.error("Invalid selected doctor!");
             return;
 
         }
-        let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+        // let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+        let formatedDate = new Date(currentDate).getTime();
 
-        if(rangeTime && rangeTime.length >0 ){
-            let selectTime = rangeTime.filter(item => item.isSlected === true );
-            if(selectTime && selectTime.length >0){
-                selectTime.map((schedule, index) =>{
+        if (rangeTime && rangeTime.length > 0) {
+            let selectTime = rangeTime.filter(item => item.isSlected === true);
+            if (selectTime && selectTime.length > 0) {
+                selectTime.map((schedule, index) => {
                     let object = {};
                     object.doctorId = selectedDoctor.value;
                     object.date = formatedDate;
-                    object.time = schedule.keyMap;
+                    object.timeType = schedule.keyMap;
                     result.push(object);
                 })
-              
-
-            }else{
+            } else {
                 toast.error("Invalid selected time!");
                 return;
             }
         }
-         console.log(result)
+
+        let res = await saveBulkScheduleDoctor({
+            arrSchedule: result,
+            doctorId: selectedDoctor.value,
+            formatedDate: formatedDate
+        })
+        console.log('check saveBulkScheduleDoctor res: ', res);
+
+        console.log("check result: ", result);
 
     }
 
     render() {
-            let {rangeTime}  = this.state;
-            let {language} = this.props;
-       
+        let { rangeTime } = this.state;
+        let { language } = this.props;
+
         return (
-        <div className= "manage-schedule-container">
-            <div className= "m-s-title">
-                    <FormattedMessage id = "manage-shedule.title"/>
-            </div>
-            <div className= "container">
-                <div    className="row">
-                    <div className="col-6 form-group">
-                        <label><FormattedMessage id = "manage-shedule.choose-doctor"/></label>
-                        <Select
-                            value={this.state.selectedDoctor}
-                            onChange={this.handleChangeSelect}
-                            options={this.state.listDoctors}
-                        //placeholder={<FormattedMessage id="admin.manage-doctor.select-doctor"/>}
+            <div className="manage-schedule-container">
+                <div className="m-s-title">
+                    <FormattedMessage id="manage-shedule.title" />
+                </div>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-6 form-group">
+                            <label><FormattedMessage id="manage-shedule.choose-doctor" /></label>
+                            <Select
+                                value={this.state.selectedDoctor}
+                                onChange={this.handleChangeSelect}
+                                options={this.state.listDoctors}
+                            //placeholder={<FormattedMessage id="admin.manage-doctor.select-doctor"/>}
 
-                        />
-            
-                    </div>
-                    <div className="col-6 form-group">
-                         <label><FormattedMessage id = "manage-shedule.choose-date"/></label>
-                         <DatePicker 
-                            onChange= {this.handleOnchageDatePicket}
-                            className= "form-control"
-                            value = {this.state.currentDate[0]}
-                            minDate = {new Date()}
-                           
-                         />
-                    </div>
-                    <div className="col-12 pick-hour-container">
-                        {rangeTime && rangeTime.length > 0 &&
-                        rangeTime.map((item, index ) =>{
-                            return (
-                                <button className= {item.isSlected === true 
-                                    ? "btn btn-schedule active": "btn btn-schedule"}
-                                 key = {index}
-                                   onClick={() => this.handleClickTime(item)}>
-                                
-                                   {language === LANGUAGES.VI ? item.valueVi : item.valueEn }
-                                    
-                                    </button>
-                            )
-                        })}
+                            />
+
+                        </div>
+                        <div className="col-6 form-group">
+                            <label><FormattedMessage id="manage-shedule.choose-date" /></label>
+                            <DatePicker
+                                onChange={this.handleOnchageDatePicket}
+                                className="form-control"
+                                value={this.state.currentDate[0]}
+                                minDate={new Date()}
+
+                            />
+                        </div>
+                        <div className="col-12 pick-hour-container">
+                            {rangeTime && rangeTime.length > 0 &&
+                                rangeTime.map((item, index) => {
+                                    return (
+                                        <button className={item.isSlected === true
+                                            ? "btn btn-schedule active" : "btn btn-schedule"}
+                                            key={index}
+                                            onClick={() => this.handleClickTime(item)}>
+
+                                            {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
+
+                                        </button>
+                                    )
+                                })}
+
+                        </div>
+                        <div className=" col-12">
+                            <button className="btn btn-primary btn-save-schedule "
+                                onClick={() => this.handleSaveSchedule()}
+                            >
+                                <FormattedMessage id="manage-shedule.save" /></button>
+                        </div>
+
 
                     </div>
-                    <div className=" col-12">
-                    <button className="btn btn-primary btn-save-schedule "
-                    onClick={() => this.handleSaveShudule()}
-                    >
-                        <FormattedMessage id = "manage-shedule.save"/></button>
-                    </div>
-
 
                 </div>
-
             </div>
-        </div>   
-              
-            
+
+
         );
     }
 }
@@ -212,8 +217,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-         fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
-          fetchAllScheduleTime: () => dispatch(actions.fetchAllScheduleTime()),
+        fetchAllDoctors: () => dispatch(actions.fetchAllDoctors()),
+        fetchAllScheduleTime: () => dispatch(actions.fetchAllScheduleTime()),
     };
 };
 
