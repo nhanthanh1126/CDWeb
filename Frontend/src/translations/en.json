@@ -59,5 +59,13 @@
     "homepage": {
         "outstanding-doctor": "Last week's featured doctor",
         "more-infor": "More infor"
+    },
+    "manage-shedule" :{
+        "title": "Managem doctor's examination plan",
+        "choose-doctor": "Choose doctor",
+        "choose-date": "Choose date",
+        "save": "Save infor"
+        
+        
     }
 }
