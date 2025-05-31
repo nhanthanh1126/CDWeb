@@ -4,9 +4,13 @@ import './ManageSchedule.scss'
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import * as actions from "../../../store/actions";
-import { CRUD_ACTIONS, LANGUAGES } from '../../../utils';
+import { CRUD_ACTIONS, LANGUAGES, dateFormat } from '../../../utils';
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
+import { fromPairs, iteratee, times } from 'lodash';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
+
 
 
 class ManageSchedule extends Component {
@@ -41,8 +45,15 @@ componentDidUpdate(prevProps, prevState, snapshot){
       //  }
 
       if(prevProps.allScheduleTime !== this.props.allScheduleTime){
+        let data = this.props.allScheduleTime;
+        if(data && data.length > 0){
+            data = data.map(item => ({ ...item, isSlected: false}))
+        }
+
         this.setState({
-            rangeTime: this.props.allScheduleTime
+            
+
+            rangeTime: data
         })
       }
 
@@ -76,12 +87,58 @@ componentDidUpdate(prevProps, prevState, snapshot){
         })
 
     }
+    handleClickTime = (time) => {
+        let {rangeTime} = this.state;
+        if(rangeTime && rangeTime.length> 0 ){
+            rangeTime = rangeTime.map(item => {
+                if(item.id === time.id) item.isSlected = !item.isSlected;
+                return item;
+            })
+            this.setState({
+                rangeTime: rangeTime
+            })
+        }
+    }
+    handleSaveShudule = ()=>{
 
+        let {rangeTime, selectedDoctor, currentDate} =this.state;
+        let result = [];
+        if(!currentDate){
+            toast.error("Invalid date!");
+            return;
+        }
+        if(selectedDoctor && _.isEmpty(selectedDoctor)){
+            toast.error("Invalid selected doctor!");
+            return;
+
+        }
+        let formatedDate = moment(currentDate).format(dateFormat.SEND_TO_SERVER);
+
+        if(rangeTime && rangeTime.length >0 ){
+            let selectTime = rangeTime.filter(item => item.isSlected === true );
+            if(selectTime && selectTime.length >0){
+                selectTime.map((schedule, index) =>{
+                    let object = {};
+                    object.doctorId = selectedDoctor.value;
+                    object.date = formatedDate;
+                    object.time = schedule.keyMap;
+                    result.push(object);
+                })
+              
+
+            }else{
+                toast.error("Invalid selected time!");
+                return;
+            }
+        }
+         console.log(result)
+
+    }
 
     render() {
-            console.log('aa', this.state)
             let {rangeTime}  = this.state;
             let {language} = this.props;
+       
         return (
         <div className= "manage-schedule-container">
             <div className= "m-s-title">
@@ -114,7 +171,11 @@ componentDidUpdate(prevProps, prevState, snapshot){
                         {rangeTime && rangeTime.length > 0 &&
                         rangeTime.map((item, index ) =>{
                             return (
-                                <button className="btn btn-schedule " key = {index}>
+                                <button className= {item.isSlected === true 
+                                    ? "btn btn-schedule active": "btn btn-schedule"}
+                                 key = {index}
+                                   onClick={() => this.handleClickTime(item)}>
+                                
                                    {language === LANGUAGES.VI ? item.valueVi : item.valueEn }
                                     
                                     </button>
@@ -123,7 +184,10 @@ componentDidUpdate(prevProps, prevState, snapshot){
 
                     </div>
                     <div className=" col-12">
-                    <button className="btn btn-primary btn-save-schedule "><FormattedMessage id = "manage-shedule.save"/></button>
+                    <button className="btn btn-primary btn-save-schedule "
+                    onClick={() => this.handleSaveShudule()}
+                    >
+                        <FormattedMessage id = "manage-shedule.save"/></button>
                     </div>
 
 
