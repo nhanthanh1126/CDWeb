@@ -170,7 +170,10 @@ let bulkCreateSchedule = (data) => {
                     }
                 );
 
-                // convert data
+                console.log('--------------------------------------------');
+                console.log('existing data', existing);
+
+                // convert data 
                 if (existing && existing.length > 0) {
                     existing = existing.map(item => {
                         item.date = new Date(item.date).getTime();
@@ -178,10 +181,16 @@ let bulkCreateSchedule = (data) => {
                     })
                 }
 
+                console.log('--------------------------------------------');
+                console.log('Covert data', existing);
+
                 //compare different
                 let toCreate = _.differenceWith(schedule, existing, (a, b) => {
                     return a.timeType === b.timeType && a.date === b.date;
                 })
+
+                console.log('--------------------------------------------');
+                console.log('Data to create', toCreate);
 
                 //create data
                 if (toCreate && toCreate.length > 0) {
@@ -200,10 +209,39 @@ let bulkCreateSchedule = (data) => {
     })
 }
 
+let getScheduleByDate = (doctorId, date) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!doctorId || !date) {
+                resolve({
+                    errCode: -1,
+                    errMessage: 'Missing required parameter'
+                })
+            } else {
+                let dataSchedule = await db.Schedule.findAll({
+                    where: {
+                        doctorId: doctorId,
+                        date: date
+                    },
+                })
+                if (!dataSchedule) dataSchedule = [];
+
+                resolve({
+                    errCode: 0,
+                    data: dataSchedule
+                })
+            }
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     getTopDoctorHome: getTopDoctorHome,
     getAllDoctors: getAllDoctors,
     saveDetailInforDoctor: saveDetailInforDoctor,
     getDetailDoctorById: getDetailDoctorById,
     bulkCreateSchedule: bulkCreateSchedule,
+    getScheduleByDate: getScheduleByDate,
 }
