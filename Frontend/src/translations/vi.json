@@ -83,6 +83,22 @@
 
 
 
+        },
+        "booking-modal": {
+            "title": "Thông tin đặt lịch khám bệnh",
+            "fullName": "Họ và tên",
+            "phoneNumber": "Số điện thoại",
+            "email": "Địa chỉ Email",
+            "address":"Địa chỉ liên lạc",
+            "reason": "Lý do khám",
+            "birthday":"Ngày sinh",
+            "gender": "Giới tính",
+            "btnConfirm": "Xác nhận",
+            "btnCancel":"Hủy",
+            "price-booking": "Miễn phí đặt lịch",
+            "price": "Giá khám: "
+
+
         }
     },
     "admin": {

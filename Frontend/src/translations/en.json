@@ -79,6 +79,23 @@
             "detail": "See detail",
             "payment": "Patients can pay the costs using the following methods: ",
             "hide-price": "Hide price list"
+        },
+        "booking-modal": {
+            "title": "Information for scheduling a medical appointment.",
+            "fullName": "Full name",
+            "phoneNumber": "Phone number",
+            "email": "Email",
+            "address":"Contact address",
+            "reason": "Reason for examination",
+            "birthday":"Date of birth",
+            "gender": "Gender",
+            "btnConfirm": "Confirm",
+            "btnCancel":"Cancel",
+            "price-booking": "Free booking",
+             "price": "Price: "
+
+
+
         }
     },
     "admin": {
