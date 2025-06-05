@@ -11,8 +11,12 @@
       */
      static associate(models) {
       Schedule.belongsTo(models.Allcode, { foreignKey: 'timeType', targetKey: 'keyMap', as: 'timeTypeData' })
-       // define association here
+       
+      Schedule.belongsTo(models.User,
+          { foreignKey: 'doctorId', targetKey: 'id', as: 'doctorData' })
+      // define association here
      }
+     
    };
    Schedule.init({
      currentNumber: DataTypes.INTEGER,
