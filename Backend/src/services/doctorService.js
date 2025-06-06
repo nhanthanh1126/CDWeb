@@ -226,9 +226,6 @@ let bulkCreateSchedule = (data) => {
                     return a.timeType === b.timeType && +a.date === +b.date;
                 })
 
-                console.log('--------------------------------------------');
-                console.log('Data to create', toCreate);
-
                 //create data
                 if (toCreate && toCreate.length > 0) {
                     await db.Schedule.bulkCreate(toCreate);
