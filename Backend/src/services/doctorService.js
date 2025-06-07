@@ -91,7 +91,10 @@ let saveDetailInforDoctor = (inputData) => {
                         contentHTML: inputData.contentHTML,
                         contentMarkdown: inputData.contentMarkdown,
                         description: inputData.description,
-                        doctorId: inputData.doctorId
+                        doctorId: inputData.doctorId,
+                        specialtyId: inputData.specialtyId, 
+                        clinicId: inputData.clinicId 
+                       
                     })
                 } else if (inputData.action === 'EDIT') {
                     let doctorMarkdown = await db.Markdown.findOne({
@@ -103,6 +106,8 @@ let saveDetailInforDoctor = (inputData) => {
                         doctorMarkdown.contentHTML = inputData.contentHTML;
                         doctorMarkdown.contentMarkdown = inputData.contentMarkdown;
                         doctorMarkdown.description = inputData.description;
+                        doctorMarkdown.specialtyId = inputData.specialtyId; 
+                        doctorMarkdown.clinicId = inputData.clinicId;
                         doctorMarkdown.updateAt = new Date();
                         await doctorMarkdown.save()
                     }
