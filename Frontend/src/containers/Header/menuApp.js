@@ -63,6 +63,9 @@ export const doctorMenu = [
 
                 name: 'menu.doctor.manage-schedule', link: '/doctor/manage-schedule'
             },
+            { //hquản lý bệnh nhânAdd commentMore actions
+                name: 'menu.doctor.manage-patient', link: '/doctor/manage-patient'
+            },
         ]
     }
 ];

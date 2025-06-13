@@ -37,7 +37,8 @@
             "manage-handbook": "Quản lý cẩm nang"
         },
         "doctor": {
-            "manage-schedule": "Quản lý kế hoạch khám bệnh"
+            "manage-schedule": "Quản lý kế hoạch khám bệnh",
+            "manage-patient": "Quản lý bệnh nhân khám bệnh"
         }
     },
     "manage-user": {
@@ -73,33 +74,27 @@
             "no-schedule": "Bác sĩ không có lịch hẹn trong thời gian này, vui lòng chọn thời gian khác!",
             "choose": "Chọn ",
             "book-free": " và đặt (miễn phí)"
-
         },
         "extra-infor-doctor": {
             "text-address": "Địa chỉ khám",
-            "price" : "Giá khám: ",
+            "price": "Giá khám: ",
             "detail": "Xem chi tiết",
             "payment": "Người bệnh có thể thanh toán chi phí bằng hình thức: ",
             "hide-price": "Ẩn bảng giá"
-
-
-
         },
         "booking-modal": {
             "title": "Thông tin đặt lịch khám bệnh",
             "fullName": "Họ và tên",
             "phoneNumber": "Số điện thoại",
             "email": "Địa chỉ Email",
-            "address":"Địa chỉ liên lạc",
+            "address": "Địa chỉ liên lạc",
             "reason": "Lý do khám",
-            "birthday":"Ngày sinh",
+            "birthday": "Ngày sinh",
             "gender": "Giới tính",
             "btnConfirm": "Xác nhận",
-            "btnCancel":"Hủy",
+            "btnCancel": "Hủy",
             "price-booking": "Miễn phí đặt lịch",
             "price": "Giá khám: "
-
-
         }
     },
     "admin": {

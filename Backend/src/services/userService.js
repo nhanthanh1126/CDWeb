@@ -24,8 +24,7 @@ let handleUserLogin = (email, password) => {
                 //user is alrealy exist
                 //copmpare password
                 let user = await db.User.findOne({
-                    // attributes: ['email', 'roleId', 'password'],
-                    attributes: ['email', 'roleId', 'password', 'firstName', 'lastName'],
+                    attributes: ['id', 'email', 'roleId', 'password', 'firstName', 'lastName'],
                     where: { email: email },
                     raw: true
                 });
@@ -166,7 +165,7 @@ let updateUserData = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!data.id || !data.roleId || !data.positionId || !data.gender) {
-            // if (!data.id) {
+                // if (!data.id) {
                 resolve({
                     errCode: 2,
                     errMessage: 'Missing required parameters'
@@ -184,7 +183,7 @@ let updateUserData = (data) => {
                 user.positionId = data.positionId;
                 user.gender = data.gender;
                 user.phoneNumber = data.phoneNumber;
-                
+
                 if (data.avatar) {
                     user.image = data.avatar
                 }
