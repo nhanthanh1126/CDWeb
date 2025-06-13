@@ -105,4 +105,7 @@ export {
     createNewClinic,
     getAllClinic,
     getAllDetailClinicById
+
+
+    
 }
