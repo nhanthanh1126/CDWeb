@@ -27,8 +27,7 @@
             "manage-user": "Users System",
             "manage-doctor": "Manage doctor",
             "manage-admin": "Manage admins",
-            "crud": "CRUD user",
-            "crud-redux": "CRUD Redux",
+            "crud-redux": "User Management",
             "clinic": "Clinics",
             "manage-clinic": "Manage clinics",
             "specialty": "Specialties",
@@ -60,7 +59,8 @@
     "homepage": {
         "outstanding-doctor": "Last week's featured doctor",
         "more-infor": "More infor",
-        "specialty-popular": "Popular specialties"
+        "specialty-popular": "Popular specialties",
+        "outstanding-medical-facilities": "Outstanding medical facilities"
     },
     "manage-shedule": {
         "title": "Managem doctor's examination plan",
